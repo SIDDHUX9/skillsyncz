@@ -6,22 +6,16 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 // Validate environment variables
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase environment variables:', {
-    url: !!supabaseUrl,
-    anonKey: !!supabaseAnonKey
-  })
+  throw new Error('Missing required Supabase environment variables. Please check NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.')
 }
 
 // Client for browser-side operations
-export const supabase = createClient(
-  supabaseUrl || 'https://objodaaunfznwdrhkuub.supabase.co',
-  supabaseAnonKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9iam9kYWF1bmZ6bndkcmhrdXViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzODc0OTEsImV4cCI6MjA3Njk2MzQ5MX0.geirSs3_yLgtJhFfAv2HEEndcc-xfvoLoNPJs0JWTuI'
-)
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 // Client for server-side operations (with elevated privileges)
 export const supabaseAdmin = createClient(
-  supabaseUrl || 'https://objodaaunfznwdrhkuub.supabase.co',
-  supabaseServiceKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9iam9kYWF1bmZ6bndkcmhrdXViIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTM4NzQ5MSwiZXhwIjoyMDc2OTYzNDkxfQ.oVPmuxqdzHGQkZWFIlse9XoflwHFnapP-X5gKp3bfHM',
+  supabaseUrl!,
+  supabaseServiceKey!,
   {
     auth: {
       autoRefreshToken: false,
